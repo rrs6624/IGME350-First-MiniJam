@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float speed;
     private Rigidbody2D rBody;
-    private Vector2 moveInput;
+    private Vector2 movement;
 
     private void Awake()
     {
@@ -20,12 +20,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rBody.linearVelocity = moveInput * speed;
+        movement.x = Input.GetAxis("Horizontal"); // A/D
+        movement.y = Input.GetAxis("Vertical");   // W/S
     }
 
-    public void OnMove(InputAction.CallbackContext context)
+    void FixedUpdate()
     {
-        moveInput = context.ReadValue<Vector2>();
+        rBody.MovePosition(rBody.position + movement * speed * Time.fixedDeltaTime);
     }
 
     private Interactable currentInteractable;
