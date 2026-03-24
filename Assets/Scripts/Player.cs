@@ -27,4 +27,34 @@ public class Player : MonoBehaviour
     {
         moveInput = context.ReadValue<Vector2>();
     }
+
+    private Interactable currentInteractable;
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed && currentInteractable != null)
+        {
+            currentInteractable.Interact();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Interactable interactable = other.GetComponent<Interactable>();
+
+        if (interactable != null)
+        {
+            currentInteractable = interactable;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Interactable interactable = other.GetComponent<Interactable>();
+
+        if (interactable != null && interactable == currentInteractable)
+        {
+            currentInteractable = null;
+        }
+    }
 }
